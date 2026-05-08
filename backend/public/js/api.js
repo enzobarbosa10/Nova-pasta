@@ -13,6 +13,18 @@
 })();
 const API_BASE_URL = (window.API_BASE || '') + '/api/v1';
 
+// Build auth headers — token injected by PHP header.php
+function _authHeaders() {
+    const token = window.AUTH_TOKEN || '';
+    const h = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+    };
+    if (token) h['Authorization'] = 'Bearer ' + token;
+    return h;
+}
+
 // API Helper Functions
 const api = {
     // GET Request
@@ -20,11 +32,14 @@ const api = {
         try {
             const response = await fetch(`${API_BASE_URL}${endpoint}`, {
                 method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
+                headers: _authHeaders(),
+                credentials: 'same-origin',
             });
+
+            if (response.status === 401 || response.status === 403) {
+                window.location.href = (window.API_BASE || '') + '/login.php';
+                return;
+            }
             
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -42,12 +57,15 @@ const api = {
         try {
             const response = await fetch(`${API_BASE_URL}${endpoint}`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
+                headers: _authHeaders(),
+                credentials: 'same-origin',
                 body: JSON.stringify(data)
             });
+
+            if (response.status === 401 || response.status === 403) {
+                window.location.href = (window.API_BASE || '') + '/login.php';
+                return;
+            }
             
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -65,12 +83,15 @@ const api = {
         try {
             const response = await fetch(`${API_BASE_URL}${endpoint}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
+                headers: _authHeaders(),
+                credentials: 'same-origin',
                 body: JSON.stringify(data)
             });
+
+            if (response.status === 401 || response.status === 403) {
+                window.location.href = (window.API_BASE || '') + '/login.php';
+                return;
+            }
             
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -88,12 +109,14 @@ const api = {
         try {
             const response = await fetch(`${API_BASE_URL}${endpoint}`, {
                 method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
+                headers: _authHeaders(),
+                credentials: 'same-origin',
             });
+
+            if (response.status === 401 || response.status === 403) {
+                window.location.href = (window.API_BASE || '') + '/login.php';
+                return;
+            }
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -111,13 +134,15 @@ const api = {
         try {
             const response = await fetch(`${API_BASE_URL}${endpoint}`, {
                 method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
+                headers: _authHeaders(),
+                credentials: 'same-origin',
                 body: JSON.stringify(data)
             });
+
+            if (response.status === 401 || response.status === 403) {
+                window.location.href = (window.API_BASE || '') + '/login.php';
+                return;
+            }
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

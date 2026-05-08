@@ -224,6 +224,20 @@ body {
     letter-spacing: 0.05em;
 }
 
+.nav-logout {
+    color: rgba(200, 96, 42, 0.65) !important;
+    font-size: 13px;
+}
+
+.nav-logout:hover {
+    background: rgba(200, 96, 42, 0.12) !important;
+    color: #e07a55 !important;
+}
+
+.nav-logout svg {
+    opacity: 0.75;
+}
+
 .main-wrapper {
     margin-left: var(--sidebar-width);
     flex: 1;
