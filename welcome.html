@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao ExpeditionOS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 60px 40px;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 48px;
+            color: #1a202c;
+            margin-bottom: 16px;
+            font-weight: 300;
+            letter-spacing: -1px;
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            color: #718096;
+            margin-bottom: 40px;
+        }
+        
+        .status {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status-label {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .status-value {
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-success {
+            background: #d1fae5;
+            color: #059669;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 16px 40px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+        }
+        
+        .features {
+            margin-top: 40px;
+            text-align: left;
+        }
+        
+        .features h3 {
+            font-size: 18px;
+            color: #2d3748;
+            margin-bottom: 16px;
+        }
+        
+        .feature-list {
+            list-style: none;
+        }
+        
+        .feature-list li {
+            padding: 8px 0;
+            color: #4a5568;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .feature-list li::before {
+            content: "✓";
+            background: #10b981;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid #e2e8f0;
+            color: #a0aec0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧭 ExpeditionOS</h1>
+        <p class="subtitle">Sistema de Gerenciamento de Expedições</p>
+        
+        <div class="status">
+            <div class="status-item">
+                <span class="status-label">Frontend</span>
+                <span class="status-value status-success">PHP Ativo</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Backend</span>
+                <span class="status-value status-success">Laravel Ativo</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Tecnologia</span>
+                <span class="status-value status-success">PHP + CSS + JS</span>
+            </div>
+        </div>
+        
+        <a href="backend/public/dashboard.php" class="btn">Acessar Dashboard</a>
+        
+        <div class="features">
+            <h3>✨ Recursos Disponíveis:</h3>
+            <ul class="feature-list">
+                <li>Dashboard com métricas em tempo real</li>
+                <li>Catálogo completo de expedições</li>
+                <li>CRM com pipeline Kanban</li>
+                <li>Calendário de expedições</li>
+                <li>Banco de mídia integrado</li>
+                <li>Analytics e relatórios</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>Convertido de React/TypeScript para PHP/CSS/JavaScript</p>
+            <p>Performance otimizada • Sem dependências • Fácil manutenção</p>
+        </div>
+    </div>
+</body>
+</html>
