@@ -92,6 +92,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 
-<script src="/js/expeditions.js"></script>
+<script src="<?= $baseUrl ?>/js/expeditions.js"></script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

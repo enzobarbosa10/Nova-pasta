@@ -24,6 +24,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 
-<script src="/js/media.js"></script>
+<script src="<?= $baseUrl ?>/js/media.js"></script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

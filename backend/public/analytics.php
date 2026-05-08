@@ -34,6 +34,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 
-<script src="/js/analytics.js"></script>
+<script src="<?= $baseUrl ?>/js/analytics.js"></script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

@@ -94,7 +94,7 @@ require_once __DIR__ . '/includes/header.php';
                     <span class="card-label">Movimentações</span>
                     <h2>Atividade Recente</h2>
                 </div>
-                <a href="/crm.php" style="font-size:12px;color:var(--gold);text-decoration:none;letter-spacing:0.05em;">Ver tudo →</a>
+                <a href="<?= $baseUrl ?>/crm.php" style="font-size:12px;color:var(--gold);text-decoration:none;letter-spacing:0.05em;">Ver tudo →</a>
             </div>
             <div class="card-content" style="padding:8px 0">
                 <div class="activity-list" id="activityFeed">
@@ -160,7 +160,7 @@ require_once __DIR__ . '/includes/header.php';
                         <span class="card-label">Em Breve</span>
                         <h2>Próximas Expedições</h2>
                     </div>
-                    <a href="/expeditions.php" style="font-size:12px;color:var(--gold);text-decoration:none;">Ver todas →</a>
+                    <a href="<?= $baseUrl ?>/expeditions.php" style="font-size:12px;color:var(--gold);text-decoration:none;">Ver todas →</a>
                 </div>
                 <div class="upcoming-list" id="upcomingExpeditionsList">
                     <div class="upcoming-item">
@@ -176,6 +176,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 
-<script src="/js/dashboard.js"></script>
+<script src="<?= $baseUrl ?>/js/dashboard.js"></script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

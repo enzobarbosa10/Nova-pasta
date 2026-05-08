@@ -1,11 +1,17 @@
+<?php
+// Base URL detectado dinamicamente — funciona em XAMPP sub-pasta e virtual host
+if (!isset($baseUrl)) {
+    $baseUrl = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chapada Diamantina — Sistema de Expedições</title>
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="<?= $baseUrl ?>/css/main.css">
+    <link rel="stylesheet" href="<?= $baseUrl ?>/css/components.css">
 </head>
 <body>
     <div class="app-container">
@@ -33,7 +39,7 @@
             <nav class="sidebar-nav">
                 <span class="nav-section-label">Operações</span>
 
-                <a href="/dashboard.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>">
+                <a href="<?= $baseUrl ?>/dashboard.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <rect x="3" y="3" width="7" height="7" rx="1"></rect>
                         <rect x="14" y="3" width="7" height="7" rx="1"></rect>
@@ -43,7 +49,7 @@
                     <span>Dashboard</span>
                 </a>
 
-                <a href="/expeditions.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'expeditions.php' ? 'active' : ''; ?>">
+                <a href="<?= $baseUrl ?>/expeditions.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'expeditions.php' ? 'active' : ''; ?>">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <path d="M3 17l4-8 4 4 4-6 4 10"></path>
                         <line x1="3" y1="21" x2="21" y2="21"></line>
@@ -51,7 +57,7 @@
                     <span>Expedições</span>
                 </a>
 
-                <a href="/crm.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'crm.php' ? 'active' : ''; ?>">
+                <a href="<?= $baseUrl ?>/crm.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'crm.php' ? 'active' : ''; ?>">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
                         <circle cx="9" cy="7" r="4"></circle>
@@ -61,7 +67,7 @@
                     <span>CRM de Leads</span>
                 </a>
 
-                <a href="/calendar.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'calendar.php' ? 'active' : ''; ?>">
+                <a href="<?= $baseUrl ?>/calendar.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'calendar.php' ? 'active' : ''; ?>">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                         <line x1="16" y1="2" x2="16" y2="6"></line>
@@ -73,7 +79,7 @@
 
                 <span class="nav-section-label">Conteúdo</span>
 
-                <a href="/media.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'media.php' ? 'active' : ''; ?>">
+                <a href="<?= $baseUrl ?>/media.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'media.php' ? 'active' : ''; ?>">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <rect x="3" y="3" width="18" height="18" rx="2"></rect>
                         <circle cx="8.5" cy="8.5" r="1.5"></circle>
@@ -82,7 +88,7 @@
                     <span>Banco de Mídia</span>
                 </a>
 
-                <a href="/analytics.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'analytics.php' ? 'active' : ''; ?>">
+                <a href="<?= $baseUrl ?>/analytics.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'analytics.php' ? 'active' : ''; ?>">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <line x1="12" y1="20" x2="12" y2="10"></line>
                         <line x1="18" y1="20" x2="18" y2="4"></line>

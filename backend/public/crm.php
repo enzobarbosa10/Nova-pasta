@@ -24,6 +24,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 
-<script src="/js/crm.js"></script>
+<script src="<?= $baseUrl ?>/js/crm.js"></script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

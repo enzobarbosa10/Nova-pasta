@@ -2,7 +2,7 @@
     </div>
 
     <!-- Global Scripts -->
-    <script src="/js/api.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="<?= $baseUrl ?>/js/api.js"></script>
+    <script src="<?= $baseUrl ?>/js/main.js"></script>
 </body>
 </html>
