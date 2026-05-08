@@ -1,0 +1,13 @@
+[build]
+builder = "nixpacks"
+buildCommand = "composer install -d backend --optimize-autoloader --no-dev"
+
+[deploy]
+startCommand = "cd backend && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan migrate --force && php -S 0.0.0.0:$PORT -t public"
+restartPolicyType = "on-failure"
+restartPolicyMaxRetries = 3
+
+[environments.production.variables]
+APP_ENV = "production"
+APP_DEBUG = "false"
+LOG_LEVEL = "error"

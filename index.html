@@ -53,9 +53,11 @@
         }
     </style>
     <script>
-        // Redirecionar para a aplicação PHP
+        // Redirecionar para o backend no Railway
+        // Troque pela URL real do seu serviço Railway
+        var railwayUrl = 'https://SEU-APP.up.railway.app';
         setTimeout(function() {
-            window.location.href = '/backend/public/dashboard.php';
+            window.location.href = railwayUrl + '/dashboard.php';
         }, 1000);
     </script>
 </head>
