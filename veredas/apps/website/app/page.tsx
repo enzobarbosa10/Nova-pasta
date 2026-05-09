@@ -1,16 +1,30 @@
 import { createClient } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
 
-export default async function Page() {
+async function carregarUsuarios() {
   const cookieStore = await cookies()
   const supabase = createClient(cookieStore)
 
-  const { data: todos } = await supabase.from('todos').select()
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+
+  if (error) {
+    console.error('Erro ao carregar usuários:', error)
+    return []
+  }
+
+  console.log(data)
+  return data
+}
+
+export default async function Page() {
+  const users = await carregarUsuarios()
 
   return (
     <ul>
-      {todos?.map((todo) => (
-        <li key={todo.id}>{todo.name}</li>
+      {users?.map((user: { id: string | number; email?: string; name?: string }) => (
+        <li key={user.id}>{user.email ?? user.name ?? String(user.id)}</li>
       ))}
     </ul>
   )
