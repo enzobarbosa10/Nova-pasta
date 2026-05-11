@@ -6,36 +6,53 @@ use App\Http\Controllers\Controller;
 use App\Models\Expedition;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ExpeditionController extends Controller
 {
+    /** Maximum allowed per_page to prevent memory exhaustion. */
+    private const MAX_PER_PAGE = 100;
+    private const DEFAULT_PER_PAGE = 25;
+
+    // ---------------------------------------------------------------------------
+    // [CRÍTICO 2] index — paginated
+    // ---------------------------------------------------------------------------
+
     public function index(Request $request): JsonResponse
     {
+        $perPage = min(
+            (int) $request->input('per_page', self::DEFAULT_PER_PAGE),
+            self::MAX_PER_PAGE
+        );
+
         $query = Expedition::query()->with(['checklistItems', 'media']);
 
-        // Filter by status
-        if ($request->has('status')) {
+        if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
-        // Filter active expeditions
-        if ($request->has('active')) {
+        if ($request->boolean('active')) {
             $query->active();
         }
 
-        $expeditions = $query->orderBy('created_at', 'desc')->get();
+        $paginator = $query->orderBy('created_at', 'desc')->paginate($perPage);
 
-        return response()->json($expeditions);
+        return response()->json($this->paginationEnvelope($paginator));
     }
 
     public function publicList(Request $request): JsonResponse
     {
-        $expeditions = Expedition::query()
+        $perPage = min(
+            (int) $request->input('per_page', self::DEFAULT_PER_PAGE),
+            self::MAX_PER_PAGE
+        );
+
+        $paginator = Expedition::query()
             ->whereIn('status', ['OPEN', 'GUARANTEED'])
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate($perPage);
 
-        return response()->json($expeditions);
+        return response()->json($this->paginationEnvelope($paginator));
     }
 
     public function store(Request $request): JsonResponse
@@ -98,11 +115,35 @@ class ExpeditionController extends Controller
         return response()->json($expedition);
     }
 
+    // ---------------------------------------------------------------------------
+    // [ALTO 4] destroy — verifica dependências antes de deletar (soft delete)
+    // ---------------------------------------------------------------------------
+
+    /**
+     * DELETE /expeditions/{expedition}
+     *
+     * Returns HTTP 409 with the list of blocking dependencies if:
+     *   - The expedition has enrolled participants, or
+     *   - There are unfinished checklist items.
+     *
+     * If no dependencies exist, performs a SOFT DELETE (sets deleted_at).
+     * Hard purge requires Expedition::withTrashed()->find($id)->forceDelete()
+     * and is intentionally not exposed via API.
+     */
     public function destroy(Expedition $expedition): JsonResponse
     {
-        $expedition->delete();
+        $blockers = $expedition->getActiveDependencies();
 
-        return response()->json(['message' => 'Expedition deleted successfully']);
+        if (! empty($blockers)) {
+            return response()->json([
+                'message'  => 'Não é possível excluir a expedição: existem dependências ativas.',
+                'blockers' => $blockers,
+            ], 409);
+        }
+
+        $expedition->delete(); // soft delete — sets deleted_at via SoftDeletes trait
+
+        return response()->json(['message' => 'Expedition deleted successfully.']);
     }
 
     public function updateStatus(Request $request, Expedition $expedition): JsonResponse
@@ -132,5 +173,30 @@ class ExpeditionController extends Controller
         $expedition->removeParticipant($participantId);
 
         return response()->json($expedition);
+    }
+
+    // ---------------------------------------------------------------------------
+    // Private helpers
+    // ---------------------------------------------------------------------------
+
+    private function paginationEnvelope(LengthAwarePaginator $paginator): array
+    {
+        return [
+            'data'  => $paginator->items(),
+            'meta'  => [
+                'current_page' => $paginator->currentPage(),
+                'per_page'     => $paginator->perPage(),
+                'total'        => $paginator->total(),
+                'last_page'    => $paginator->lastPage(),
+                'from'         => $paginator->firstItem(),
+                'to'           => $paginator->lastItem(),
+            ],
+            'links' => [
+                'first' => $paginator->url(1),
+                'last'  => $paginator->url($paginator->lastPage()),
+                'prev'  => $paginator->previousPageUrl(),
+                'next'  => $paginator->nextPageUrl(),
+            ],
+        ];
     }
 }

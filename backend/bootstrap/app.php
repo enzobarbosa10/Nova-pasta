@@ -17,6 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'role'        => \App\Http\Middleware\CheckRole::class,
             'active_user' => \App\Http\Middleware\EnsureUserIsActive::class,
         ]);
+
+        // Prepend cookie-to-token extraction before auth guard runs
+        $middleware->prependToGroup('api', \App\Http\Middleware\ReadTokenFromCookie::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -17,3 +17,10 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# [MÉDIO 6] Never commit Composer binaries — install via CI script instead
+*.phar
+composer-setup.php
+
+# Seed credentials — contains generated passwords, must never be committed
+/storage/app/seed-credentials.txt

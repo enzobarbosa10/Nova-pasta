@@ -637,11 +637,12 @@ if (!empty($_SESSION['auth_token']) && !empty($_SESSION['user'])) {
                 return;
             }
 
-            // Step 2: Store token in PHP session (server-side)
+            // Step 2: Store user data in PHP session (server-side).
+            // The api_token HttpOnly cookie set by the API is forwarded
+            // automatically — no token is ever sent in the request body.
             const sessionRes = await fetch(BASE + '/session_handler.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token: data.token }),
                 credentials: 'same-origin',
             });
 

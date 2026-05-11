@@ -17,21 +17,49 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit(json_encode(['error' => 'Method not allowed']));
 }
 
-$raw  = file_get_contents('php://input');
-$data = json_decode($raw, true);
+// -----------------------------------------------------------------------
+// Token source: HttpOnly cookie 'api_token' set by the Laravel login endpoint.
+// The cookie is sent automatically by the browser on same-origin POST requests
+// and is never exposed to JavaScript. Reject if the cookie is absent.
+// -----------------------------------------------------------------------
+$token = isset($_COOKIE['api_token']) ? trim($_COOKIE['api_token']) : '';
 
-if (empty($data['token'])) {
+// Validate format: Sanctum token is <id>|<hash>
+if (empty($token) || ! preg_match('/^\d+\|[a-zA-Z0-9]{40,}$/', $token)) {
     http_response_code(400);
-    exit(json_encode(['error' => 'Token obrigatório']));
+    exit(json_encode(['error' => 'Cookie de autenticação ausente ou inválido']));
 }
 
-$token = trim($data['token']);
+// -----------------------------------------------------------------------
+// Build the API URL from APP_URL defined in .env.
+//
+// SECURITY: Never use $_SERVER['HTTP_HOST'] for security-sensitive URL
+// construction — an attacker can forge the Host header and redirect this
+// loopback cURL call to an arbitrary server, leaking the Bearer token
+// (Host Header Injection / SSRF via header manipulation).
+// -----------------------------------------------------------------------
+$dotenvFile = realpath(__DIR__ . '/../.env');
+$appUrl     = '';
 
-// Validate token against the API (same server — loopback request)
-$scheme  = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-$host    = $_SERVER['HTTP_HOST'];
-$script  = dirname($_SERVER['SCRIPT_NAME']); // e.g. /Nova%20pasta/backend/public
-$apiUrl  = $scheme . '://' . $host . $script . '/api/v1/auth/me';
+if ($dotenvFile && is_readable($dotenvFile)) {
+    foreach (file($dotenvFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+        $line = trim($line);
+        if ($line === '' || $line[0] === '#') {
+            continue;
+        }
+        if (str_starts_with($line, 'APP_URL=')) {
+            $appUrl = trim(substr($line, 8), " \t\"'");
+            break;
+        }
+    }
+}
+
+if (empty($appUrl) || filter_var($appUrl, FILTER_VALIDATE_URL) === false) {
+    http_response_code(500);
+    exit(json_encode(['error' => 'APP_URL não configurado corretamente no .env']));
+}
+
+$apiUrl = rtrim($appUrl, '/') . '/api/v1/auth/me';
 
 $ch = curl_init($apiUrl);
 curl_setopt_array($ch, [
@@ -42,7 +70,19 @@ curl_setopt_array($ch, [
         'Accept: application/json',
         'X-Requested-With: XMLHttpRequest',
     ],
-    CURLOPT_SSL_VERIFYPEER => false, // loopback only
+    // SECURITY: SSL verification must be enabled in production.
+    // If the certificate chain is not found automatically, set CURLOPT_CAINFO
+    // to the absolute path of your CA bundle (e.g. /etc/ssl/certs/ca-certificates.crt
+    // on Linux, or C:/xampp/apache/bin/curl-ca-bundle.crt on XAMPP).
+    //
+    // Setting CURLOPT_SSL_VERIFYPEER => false disables TLS entirely and opens
+    // a Man-in-the-Middle window: an attacker on the same host/network can
+    // intercept the loopback request, impersonate the API and capture the
+    // Bearer token or return crafted user data.
+    CURLOPT_SSL_VERIFYPEER => true,
+    CURLOPT_SSL_VERIFYHOST => 2,
+    // Uncomment and adjust if your CA bundle is not auto-detected:
+    // CURLOPT_CAINFO => 'C:/xampp/apache/bin/curl-ca-bundle.crt',
 ]);
 
 $body     = curl_exec($ch);

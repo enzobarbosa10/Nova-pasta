@@ -43,7 +43,8 @@ class AuthController extends Controller
             $user->tokens()->delete();
         }
 
-        $expiresAt = $request->boolean('remember')
+        $cookieMinutes = $request->boolean('remember') ? 43200 : 480;
+        $expiresAt     = $request->boolean('remember')
             ? now()->addDays(30)
             : now()->addHours(8);
 
@@ -52,26 +53,30 @@ class AuthController extends Controller
         // Persist last login timestamp
         $user->updateQuietly(['last_login_at' => now()]);
 
+        // SECURITY: Token emitted as HttpOnly + SameSite=Strict cookie only.
+        // It is never exposed in the JSON body, preventing JavaScript from
+        // reading or exfiltrating it (XSS mitigation). The browser sends the
+        // cookie automatically on same-origin requests.
         return response()->json([
-            'token' => $token,
-            'user'  => [
+            'user' => [
                 'id'         => $user->id,
                 'name'       => $user->name,
                 'email'      => $user->email,
                 'role'       => $user->role,
                 'role_label' => $user->getRoleLabel(),
             ],
-        ]);
+        ])->cookie('api_token', $token, $cookieMinutes, '/', null, true, true, false, 'Strict');
     }
 
     /**
-     * Revoke the current access token (logout).
+     * Revoke the current access token (logout) and expire the auth cookie.
      */
     public function logout(Request $request): JsonResponse
     {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json(['message' => 'Sessão encerrada com sucesso.']);
+        return response()->json(['message' => 'Sessão encerrada com sucesso.'])
+            ->withoutCookie('api_token');
     }
 
     /**

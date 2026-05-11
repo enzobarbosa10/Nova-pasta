@@ -82,10 +82,13 @@ Para criar usuários de teste:
 php artisan db:seed
 ```
 
-Usuários criados:
-- **Admin:** admin@expedition.com / password
-- **Operator:** operator@expedition.com / password
-- **Guide:** guide@expedition.com / password
+Usuários criados (emails):
+- admin@expedition.com (role: ADMIN)
+- operator@expedition.com (role: OPERATOR)
+- guide@expedition.com (role: OPERATOR)
+
+> **Segurança:** As senhas são geradas aleatoriamente em tempo de seed e gravadas em
+> `storage/app/seed-credentials.txt` (arquivo gitignored). Nunca são armazenadas no código-fonte.
 
 ### 6. Iniciar o Servidor
 

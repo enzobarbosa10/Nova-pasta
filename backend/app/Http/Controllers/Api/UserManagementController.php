@@ -13,11 +13,14 @@ class UserManagementController extends Controller
 {
     /**
      * List all users (MASTER_ADMIN only).
+     *
+     * [ALTO 5] Uses User::orderedByRole() scope (CASE WHEN) instead of
+     * FIELD() which is MySQL-only and breaks on PostgreSQL / Supabase.
      */
     public function index(): JsonResponse
     {
         $users = User::select(['id', 'name', 'email', 'role', 'active', 'last_login_at', 'created_at'])
-            ->orderByRaw("FIELD(role, 'MASTER_ADMIN','ADMIN','OPERATOR','GUIDE','TRAVELER')")
+            ->orderedByRole()   // portable CASE WHEN — works on MySQL + PostgreSQL + SQLite
             ->orderBy('name')
             ->get()
             ->map(fn (User $u) => array_merge($u->toArray(), [

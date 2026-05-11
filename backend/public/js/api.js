@@ -13,16 +13,16 @@
 })();
 const API_BASE_URL = (window.API_BASE || '') + '/api/v1';
 
-// Build auth headers — token injected by PHP header.php
+// Build request headers.
+// SECURITY: The Sanctum token lives in an HttpOnly cookie — never in JS.
+// The browser forwards it automatically via credentials: 'same-origin'.
+// We do NOT add an Authorization header here.
 function _authHeaders() {
-    const token = window.AUTH_TOKEN || '';
-    const h = {
+    return {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-Requested-With': 'XMLHttpRequest',
     };
-    if (token) h['Authorization'] = 'Bearer ' + token;
-    return h;
 }
 
 // API Helper Functions

@@ -20,8 +20,9 @@ $_roleLabel   = $_currentUser['role_label'] ?? $_currentUser['role'] ?? '';
     <link rel="stylesheet" href="<?= $baseUrl ?>/css/main.css">
     <link rel="stylesheet" href="<?= $baseUrl ?>/css/components.css">
     <script>
-        // Make auth token available to all JS modules
-        window.AUTH_TOKEN = <?= json_encode($_authToken) ?>;
+        // SECURITY: The Sanctum token is stored in an HttpOnly cookie and is
+        // never exposed to JavaScript. Only the current user profile (non-sensitive)
+        // is injected for UI use (role-based menu visibility, etc.).
         window.CURRENT_USER = <?= json_encode($_currentUser) ?>;
     </script>
 </head>
