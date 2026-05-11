@@ -1,33 +1,111 @@
-# 🚀 Expedition Management SaaS
+# 🌿 Veredas — Expedition Management SaaS
 
-Sistema completo de gestão de expedições com frontend React e backend Laravel.
+**Stack:** Laravel 11 (API) · Next.js 14 (Frontend) · Supabase (DB/Auth) · Turborepo (Monorepo)
 
----
-
-## ⚡ INÍCIO RÁPIDO
-
-**Primeira vez? Execute:**
-```bash
-setup.bat
-```
-
-**Depois, para iniciar o projeto:**
-```bash
-start.bat
-```
-
-**Acesse:** http://localhost:3000
-
-📖 **Documentação completa:** [SAAS_PRONTO.md](SAAS_PRONTO.md)
+> **Note:** For detailed architecture, API reference, and contribution guide see the [`docs/`](docs/) folder.
 
 ---
 
-## 📁 Estrutura do Projeto
+## Quick Start
+
+### Prerequisites
+- PHP 8.2+, Composer 2
+- Node.js 18+, pnpm 8+
+- A Supabase project (free tier works)
+
+### 1 — Clone & install
+
+```bash
+git clone <repo>
+cd "Nova pasta"
+
+# Backend
+cd backend
+composer install
+cp .env.example .env
+php artisan key:generate
+
+# Frontend monorepo
+cd ../veredas
+pnpm install
+```
+
+### 2 — Configure environment
+
+**`backend/.env`** (required variables):
+```env
+APP_URL=http://localhost:8000
+APP_FRONTEND_URL=http://localhost:3000
+MASTER_ADMIN_EMAIL=admin@yourcompany.com
+DB_CONNECTION=sqlite        # or mysql/pgsql
+```
+
+**`veredas/apps/website/.env.local`** (required):
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=eyJ...
+```
+
+### 3 — Seed & run
+
+```bash
+# Terminal 1 — Laravel API
+cd backend
+php artisan migrate --seed
+php artisan serve          # → http://localhost:8000
+
+# Terminal 2 — Next.js frontend
+cd veredas
+pnpm dev                   # → http://localhost:3000
+```
+
+Seed credentials are saved to `backend/storage/app/seed-credentials.txt`. **Delete this file after first login.**
+
+---
+
+## Project Structure
 
 ```
-├── backend/          # API Laravel
-│   ├── app/
-│   │   ├── Models/
+.
+├── backend/                  # Laravel 11 REST API
+│   ├── app/Http/Controllers/Api/
+│   ├── app/Models/
+│   ├── database/migrations/
+│   ├── routes/api.php
+│   └── tests/Feature/        # PHPUnit test suite
+│
+└── veredas/                  # Turborepo monorepo
+    ├── apps/
+    │   ├── website/          # Next.js 14 admin frontend
+    │   ├── traveler-portal/  # Traveler-facing app
+    │   └── api/              # BFF (optional)
+    └── packages/
+        ├── types/            # @veredas/types — shared TS types
+        └── ui/               # @veredas/ui — shared React components
+```
+
+---
+
+## Documentation
+
+| Document | Description |
+|---|---|
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System design, data model, auth flow |
+| [docs/API.md](docs/API.md) | Full REST API reference |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Dev workflow, conventions, testing |
+
+---
+
+## Default Roles
+
+| Role | Permissions |
+|---|---|
+| `MASTER_ADMIN` | User management + all write operations |
+| `ADMIN` | All write operations (expeditions, leads, media, checklist) |
+| `OPERATOR` | Same as ADMIN |
+| `GUIDE` | Read-only access to operational data |
+| `TRAVELER` | Traveler portal only |
+
 │   │   └── Http/Controllers/Api/
 │   ├── database/
 │   │   ├── migrations/
@@ -107,9 +185,12 @@ start.bat
 
 Após executar os seeders, você terá acesso aos seguintes usuários:
 
-- **Admin:** admin@expedition.com / password
-- **Operator:** operator@expedition.com / password
-- **Guide:** guide@expedition.com / password
+- admin@expedition.com (role: ADMIN)
+- operator@expedition.com (role: OPERATOR)
+- guide@expedition.com (role: OPERATOR)
+
+> **Segurança:** Senhas são geradas aleatoriamente a cada `db:seed` e salvas em
+> `storage/app/seed-credentials.txt` (gitignored). Não são commitadas no repositório.
 
 ### API Endpoints
 
