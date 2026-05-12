@@ -1,0 +1,22 @@
+{
+  "node": {
+    "5e0188c9ce2bf59fbcad65ffa97ff9405dc62b25": {
+      "workers": {
+        "app/login/page": "(action-browser)/../../node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5Cxampp%5C%5Chtdocs%5C%5CNova%20pasta%5C%5Cveredas%5C%5Capps%5C%5Cwebsite%5C%5Capp%5C%5Clogin%5C%5Cactions.ts%22%2C%5B%22signOut%22%2C%22signIn%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/login/page": "action-browser"
+      }
+    },
+    "a712bc674459509fe94f56f9a1b3c54fd4e299e9": {
+      "workers": {
+        "app/login/page": "(action-browser)/../../node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5Cxampp%5C%5Chtdocs%5C%5CNova%20pasta%5C%5Cveredas%5C%5Capps%5C%5Cwebsite%5C%5Capp%5C%5Clogin%5C%5Cactions.ts%22%2C%5B%22signOut%22%2C%22signIn%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/login/page": "action-browser"
+      }
+    }
+  },
+  "edge": {},
+  "encryptionKey": "6UprUkVtUzRzOPW3fSTCGiLLu48Cpn2w6DJqV4fEBak="
+}

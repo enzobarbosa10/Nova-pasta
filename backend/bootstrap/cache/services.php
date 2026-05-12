@@ -47,12 +47,11 @@
     43 => 'Illuminate\\Validation\\ValidationServiceProvider',
     44 => 'Illuminate\\View\\ViewServiceProvider',
     45 => 'Laravel\\Sail\\SailServiceProvider',
-    46 => 'Laravel\\Sanctum\\SanctumServiceProvider',
-    47 => 'Laravel\\Tinker\\TinkerServiceProvider',
-    48 => 'Carbon\\Laravel\\ServiceProvider',
-    49 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
-    50 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    51 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
+    46 => 'Laravel\\Tinker\\TinkerServiceProvider',
+    47 => 'Carbon\\Laravel\\ServiceProvider',
+    48 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
+    49 => 'Termwind\\Laravel\\TermwindServiceProvider',
+    50 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
   ),
   'eager' => 
   array (
@@ -76,11 +75,10 @@
     17 => 'Illuminate\\Pagination\\PaginationServiceProvider',
     18 => 'Illuminate\\Session\\SessionServiceProvider',
     19 => 'Illuminate\\View\\ViewServiceProvider',
-    20 => 'Laravel\\Sanctum\\SanctumServiceProvider',
-    21 => 'Carbon\\Laravel\\ServiceProvider',
-    22 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
-    23 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    24 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
+    20 => 'Carbon\\Laravel\\ServiceProvider',
+    21 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
+    22 => 'Termwind\\Laravel\\TermwindServiceProvider',
+    23 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
   ),
   'deferred' => 
   array (

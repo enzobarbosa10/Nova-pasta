@@ -9,14 +9,18 @@ use Symfony\Component\HttpFoundation\Response;
 class CheckRole
 {
     /**
-     * Verify that the authenticated user has one of the required roles.
+     * Verify that the Supabase-authenticated user has one of the required roles.
+     *
+     * The role is read from the JWT user_metadata set by VerifySupabaseJWT.
      *
      * Usage in routes:  ->middleware('role:MASTER_ADMIN')
      *                   ->middleware('role:MASTER_ADMIN,ADMIN')
      */
     public function handle(Request $request, Closure $next, string ...$roles): Response
     {
-        if (! $request->user() || ! in_array($request->user()->role, $roles)) {
+        $user = $request->attributes->get('supabase_user');
+
+        if (! $user || ! in_array($user['role'], $roles)) {
             return response()->json([
                 'message' => 'Acesso não autorizado para esta função.',
             ], 403);

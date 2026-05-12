@@ -13,13 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'verified'    => \App\Http\Middleware\EnsureEmailIsVerified::class,
-            'role'        => \App\Http\Middleware\CheckRole::class,
-            'active_user' => \App\Http\Middleware\EnsureUserIsActive::class,
+            'supabase.auth' => \App\Http\Middleware\VerifySupabaseJWT::class,
+            'role'          => \App\Http\Middleware\CheckRole::class,
         ]);
-
-        // Prepend cookie-to-token extraction before auth guard runs
-        $middleware->prependToGroup('api', \App\Http\Middleware\ReadTokenFromCookie::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

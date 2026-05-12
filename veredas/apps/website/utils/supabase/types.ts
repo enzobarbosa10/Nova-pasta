@@ -100,7 +100,9 @@ export interface LeadRow {
   phone: string | null
   message: string | null
   source: string | null
-  status: 'new' | 'contacted' | 'qualified' | 'converted' | 'lost'
+  destination: string | null
+  total_price: number | null
+  status: 'NEW' | 'CONTACTED' | 'QUALIFIED' | 'PROPOSAL' | 'RESERVED' | 'PAID' | 'POST_TRIP' | 'REFERRAL' | 'new' | 'contacted' | 'qualified' | 'converted' | 'lost'
   created_at: string
   updated_at: string
 }

@@ -7,10 +7,10 @@ import { createServerClient } from '@supabase/ssr'
 import type { Database } from '@/utils/supabase/types'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 // Routes that require authentication
-const PROTECTED_ROUTES = ['/dashboard', '/admin', '/expeditions', '/bookings', '/settings']
+const PROTECTED_ROUTES = ['/dashboard', '/expeditions', '/leads', '/users', '/analytics', '/calendar', '/media', '/settings']
 
 // Routes only for unauthenticated users (redirect away if logged in)
 const AUTH_ROUTES = ['/login', '/signup', '/auth']
